@@ -27,6 +27,12 @@ BUDS_TO_GO = Website(
             "path": lambda soup : [dom.find("a") for dom in soup.findAll("", { "class": "product-title" })],
             "selector": lambda dom : dom["href"],
         },
+    },
+    get_detail = {
+        "available": {
+            "path": lambda soup : [soup.find("", {"class": "availability"})],
+            "selector": lambda dom : dom.text,
+        },
     }
 )
 
@@ -54,7 +60,7 @@ OCS = Website(
             "path": lambda soup : [dom.parent for dom in soup.findAll("", { "class": "product-tile__title" })],
             "selector": lambda dom : dom["href"].strip(),
         },
-    }
+    },
 )
 
 WEBSITES = [
