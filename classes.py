@@ -35,6 +35,8 @@ class Website():
             flower_name = flower_name_dom
             if self.attributes["name"].get("selector"):
                 flower_name = page.get_value_from_dom(flower_name_dom, self.attributes["name"]["selector"])
+                if not flower_name:
+                    continue
             flower_attributes = {}
 
             for attribute_name in attributes_to_get:

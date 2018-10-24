@@ -21,8 +21,9 @@ websites_data = {}
 for website in WEBSITES:
     website_data = website.scrape_website()
     websites_data.update(website_data)
+    websites_data["last_updated"] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-with open("{data_folder}/{uuid}--{date}.json".format(data_folder=DATA_FOLDER, uuid=datetime.datetime.now().strftime("%Y-%m-%d"), date=str(uuid.uuid4())[:8]), "w") as outfile:
+with open("data.json", "w") as outfile:
     json.dump(websites_data, outfile)
 
 end = time.time()
