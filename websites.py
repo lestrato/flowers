@@ -28,12 +28,12 @@ BUDS_TO_GO = Website(
             "selector": lambda dom : dom["href"],
         },
     },
-    get_detail = {
-        "available": {
-            "path": lambda soup : [soup.find("", {"class": "availability"})],
-            "selector": lambda dom : dom.text,
-        },
-    }
+    # get_detail = {
+    #     "available": {
+    #         "path": lambda soup : [soup.find("", {"class": "availability"})],
+    #         "selector": lambda dom : dom.text,
+    #     },
+    # }
 )
 
 OCS = Website(
@@ -63,7 +63,31 @@ OCS = Website(
     },
 )
 
+REDDIT = Website(
+    name = "REDDIT",
+    domain = "https://www.ocs.ca",
+    pages = [
+        Page(
+            url="https://gateway.reddit.com/desktopapi/v1/subreddits/recpics?dist=100&sort=new",
+            attempts=20,
+        )
+    ],
+    request = {
+        "method": "GET",
+    },
+    isAPI = True,
+    attributes = {
+        "name": {
+            "path": lambda json: [post["title"] for post in json["posts"].values()],
+        },
+        "image": {
+            "path": lambda json: [post["media"]["content"] if post["media"]["type"] == "image" else None for post in json["posts"].values()],
+        },
+    },
+)
+
 WEBSITES = [
     BUDS_TO_GO,
     OCS,
+    REDDIT,
 ]
