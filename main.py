@@ -17,10 +17,12 @@ if not os.path.exists(os.path.dirname(DATA_FOLDER)):
 print "---start---"
 start = time.time()
 
-websites_data = {}
+websites_data = {
+    "sites": {},
+}
 for website in WEBSITES:
     website_data = website.scrape_website()
-    websites_data.update(website_data)
+    websites_data["sites"].update(website_data)
     websites_data["last_updated"] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
 with open("data.json", "w") as outfile:

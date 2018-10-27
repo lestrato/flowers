@@ -37,7 +37,7 @@ BUDS_TO_GO = Website(
 )
 
 OCS = Website(
-    name = "OCS",
+    name = "ocs",
     domain = "https://www.ocs.ca",
     pages = [
         Page(
@@ -64,7 +64,7 @@ OCS = Website(
 )
 
 REDDIT = Website(
-    name = "REDDIT",
+    name = "reddit",
     domain = "https://www.ocs.ca",
     pages = [
         Page(

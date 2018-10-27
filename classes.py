@@ -71,7 +71,7 @@ class Website():
     def scrape_website(self):
         print "> scraping Website %s" % self.name
         website_data = {
-          "site": {},
+          "_info": {},
           "flowers": {},
         }
         for page in self.pages:
@@ -79,7 +79,7 @@ class Website():
             if page_flowers == False:
                 break
             website_data["flowers"].update(page_flowers)
-        website_data["site"]["domain"] = self.domain
+        website_data["_info"]["domain"] = self.domain
 
         return { self.name: website_data }
 
