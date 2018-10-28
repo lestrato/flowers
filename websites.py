@@ -78,10 +78,10 @@ REDDIT = Website(
     isAPI = True,
     attributes = {
         "name": {
-            "path": lambda json: [post["title"] for post in json["posts"].values()],
+            "path": lambda json: [post["title"].encode('utf-8').strip() for post in json["posts"].values()],
         },
         "image": {
-            "path": lambda json: [post["media"]["content"] if post["media"]["type"] == "image" else None for post in json["posts"].values()],
+            "path": lambda json: [post["media"]["content"] if post["media"] and post["media"]["type"] == "image" else None for post in json["posts"].values()],
         },
     },
 )

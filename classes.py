@@ -29,16 +29,9 @@ class Website():
             attribute = self.attributes.get(attribute_name)
             all_flower_dom_attributes[attribute_name] = page.get_doms_from_path(attribute["path"]) if attribute else []
 
-        page_flowers = {}
-        for flower_i  in range(len(all_flower_dom_attributes["name"])):
-            flower_name_dom = all_flower_dom_attributes["name"][flower_i]
-            flower_name = flower_name_dom
-            if self.attributes["name"].get("selector"):
-                flower_name = page.get_value_from_dom(flower_name_dom, self.attributes["name"]["selector"])
-                if not flower_name:
-                    continue
-            flower_attributes = {}
-
+        page_flowers = []
+        for flower_i in range(len(all_flower_dom_attributes["name"])):
+            page_flower = {}
             for attribute_name in attributes_to_get:
                 flower_attribute_dom = all_flower_dom_attributes[attribute_name]
 
@@ -49,7 +42,7 @@ class Website():
 
                     if attribute_name in self.attributes and "selector" in self.attributes[attribute_name]:
                         flower_attribute = page.get_value_from_dom(flower_attribute_dom[flower_i], self.attributes[attribute_name]["selector"]) if flower_attribute_dom[flower_i] != None else None
-                    
+
                     if flower_attribute and attribute_name == "url":
                         if flower_attribute.startswith("/"):
                             flower_attribute = '{domain}{url}'.format(domain=self.domain, url=flower_attribute)
@@ -58,11 +51,10 @@ class Website():
                         else:
                             flower_attribute = '{domain}/{url}'.format(domain=self.domain, url=flower_attribute)
 
-                flower_attributes[attribute_name] = flower_attribute
-            
-            page_flowers[flower_name] = flower_attributes
+                page_flower[attribute_name] = flower_attribute
+            page_flowers.append(page_flower)
 
-        if page_flowers == {} :
+        if page_flowers == [] :
             print "!! there were no flowers found, exiting site"
             return False
 
@@ -70,16 +62,13 @@ class Website():
 
     def scrape_website(self):
         print "> scraping Website %s" % self.name
-        website_data = {
-          "_info": {},
-          "flowers": {},
-        }
+        website_data = []
         for page in self.pages:
             page_flowers = self.scrape_page(page)
             if page_flowers == False:
                 break
-            website_data["flowers"].update(page_flowers)
-        website_data["_info"]["domain"] = self.domain
+            website_data += page_flowers
+        # website_data["_info"]["domain"] = self.domain
 
         return { self.name: website_data }
 
@@ -120,4 +109,5 @@ class Page():
         return path(self.content)
 
     def get_value_from_dom(self, dom, selector):
-        return selector(dom)
+        return selector(dom).encode('utf-8').strip()
+
