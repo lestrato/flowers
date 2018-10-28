@@ -2,3 +2,4 @@ data.json
 **.pyc
 .DS_STORE
 env
+data.csv
